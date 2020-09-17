@@ -25,6 +25,12 @@ import {
   reactive,
   ref
 } from 'vue'
+import {
+  login
+} from '../../network/loginApi'
+import {
+  encrypto
+} from '../../utils/crypto/crypto'
 
 export default defineComponent({
   name: 'Home',
@@ -51,7 +57,18 @@ export default defineComponent({
     const userFormRef: any = ref(null)
     // 登录
     function clickLoginBtn() {
-      console.log('user:', userModel)
+      const data = {
+        username: userModel.username,
+        password: encrypto(userModel.password)
+      }
+      console.log('user:', data)
+      login(data)
+        .then((data) => {
+          console.log('data:', data)
+        })
+        .catch((err) => {
+          console.log('err:', err)
+        })
     }
 
     // 重置
